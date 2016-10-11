@@ -10,7 +10,7 @@
 
 <a id="user-content-Índice" class="anchor" href="#Índice" aria-hidden="true"></a>
 <p align="center">
-  <a href="https://github.com/SANDEISON" target="_blank">Sandeison Fernandes</a> •
+   • <a href="https://github.com/SANDEISON" target="_blank">Sandeison Fernandes</a> •
   <a href="https://github.com/VictorCardoso22" target="_blank">Victor Cardoso</a> •
 	<a href="https://github.com/Wylianne" target="_blank">Wylianne Costa</a> •
 </p>
@@ -18,8 +18,10 @@
 ## :beginner: Requisitos 
 * Navegador
 <p>
-	<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a>
-	<a href="https://www.mozilla.org/pt-BR/firefox/new/" target="_blank">Mozilla Firefox</a>
+	Clique em <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a> para baixar.
+</p>
+<p>
+	Clique em <a href="https://www.mozilla.org/pt-BR/firefox/new/" target="_blank">Mozilla Firefox</a>  para baixar.
 </p>
 
 

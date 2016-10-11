@@ -4,7 +4,7 @@
 
 <h1 align="center">Cosmic Ark</h1>
 
-<p align="center">Projeto Inovação e Desenvolvimento de Software para a WEB e Dispositivos Móveis - Programação WEB I</p>
+<p align="center">Projeto de Inovação e Desenvolvimento de Software para a WEB e Dispositivos Móveis - Programação WEB I</p>
 
 ## :mortar_board: Integrantes
 

@@ -23,5 +23,5 @@ W | Atira para cima
 A | Atira para esquerda
 D | Atira para direita
 S | Atira para baixo
-Backspace | Inicia jogo/Remove tela de derrota
+Space | Inicia jogo/Remove tela de derrota
 

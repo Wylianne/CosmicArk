@@ -1,0 +1,386 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+
+		<style type="text/css">
+			canvas{
+				position: absolute;
+				top: 0px;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				margin: auto;
+			}
+		</style>
+
+	</head>
+	<body>
+		<script type="text/javascript">
+			/**
+			* @author Wylianne Costa
+			* Módulo para inserção de inimigos no jogo e layout
+			* Atualiazação:
+			*   - Documentação com todos os métodos como  @autor, @version, @return e @param (Quando necessário).
+			* V. 1.00
+			*/
+			
+
+
+			//variaveis globais
+			var canvas, ctx, ALTURA, LARGURA, frames = 0, time = 0, velocidade = 5,
+			estadoAtual,
+
+
+
+			/**
+			* @author Wylianne Costa
+			* Módulo para inserção do bloco onde aparece o placar
+			* V. 1.00
+			*/
+
+			estados = {
+				jogar: 0,
+				jogando: 1,
+				perdeu: 2
+			},
+
+			score = {
+				//margem superior
+				y: 520,
+				//Altura do bloco
+				altura: 50,
+
+				desenha: function(){
+					//Seta tamanho da borda
+					ctx.lineWidth = 10;
+					//seta cor de fundo
+				    ctx.fillStyle = "black";
+				    //seta tamanho do fundo
+				    ctx.fillRect(200, this.y, 200, this.altura);
+				    //seta cor da borda
+				    ctx.strokeStyle = "red";
+				    //seta borda
+				    ctx.strokeRect(200, this.y, 200, this.altura); 
+					
+				}
+			},
+
+
+
+
+			/**
+			* @author Wylianne Costa
+			* Módulo para inserção de inimigos no jogo
+			* V. 1.00
+			*/
+			enemy = {
+				_enemy: [],
+				//Direção do inimigo
+				//1 - Up; 2 - Left; 3 - Right; 4 - Down
+				direcao: [1, 2, 3, 4],
+				
+				//Altura e largura do inimigo;
+				altura: 10,
+				largura: 10,
+				// cor e o tempo inicial que é inserido
+				cor: "#ff4e4e",
+				tempoInsere: 0,
+
+
+				/**
+				* @author Wylianne Costa
+				* Módulo para inserir inimigos no jogo, todas as direções
+				* V. 1.00
+				*/
+				insere: function(){
+					this._enemy.push({
+						x: 0,
+						y: 0,
+						//Largura e altura do inimigo
+						largura: 10,
+						//Define direção que o inimigo aparecerá
+						direcao: this.direcao[Math.floor(Math.random() * 9)],
+						//Cor o inimigo
+						cor: "#ff4e4e"
+					})
+
+					//Intervalo de tempo que cada inimigo é chamado (0-29)
+					this.tempoInsere = Math.floor(Math.random() * 30);
+				},
+
+				/**
+				* @author Wylianne Costa
+				* Módulo para calcular a posição dos inimigos no jogo
+				* V. 1.00
+				*/
+				atualiza: function(){
+					//Verifica se deve chamar um novo inimigo
+					if(this.tempoInsere == 0){
+						this.insere();
+					}else{
+						this.tempoInsere--;
+					}
+
+					//Percorre o array e atualiza a posição dos inimigos que estão na tela
+					for(var i = 0, tam = this._enemy.length; i < tam; i++){
+						var en = this._enemy[i];
+						
+
+						if(en.direcao == 1){
+
+							//Calcula a nova posição do inimigo
+							en.y = en.y + velocidade;
+
+							if(en.y >= 295){
+								//remove o inimigo i, se ele sair da tela
+								this._enemy.splice(i, 1);
+								//Diminui o tamaho do array
+								tam--;
+								i--;
+							}
+
+
+						}else 
+							if(en.direcao == 2){
+
+								//Calcula a nova posição do inimigo
+								en.x = en.x + velocidade;
+
+
+									if(en.x >= 295){
+										//remove o inimigo i, se ele sair da tela
+										this._enemy.splice(i, 1);
+										//Diminui o tamaho do array
+										tam--;
+										i--;
+									}
+							}else 
+								if(en.direcao == 3){
+
+
+									//Calcula a nova posição do inimigo
+									en.x = en.x - velocidade;
+
+									//Verifica se posição x = 0, se sim atribui 600 na posição inicial.
+									//Para iniciar da direita
+									if (en.x == 0){
+										en.x = 600;
+
+									}
+
+
+									if(en.x <= 295){
+										//remove o inimigo i, se ele sair da tela
+										this._enemy.splice(i, 1);	
+										//Diminui o tamaho do array
+										tam--;
+										i--;
+									}
+									
+								}
+								else{
+
+									//Calcula a nova posição do inimigo
+									en.y = en.y - velocidade;
+
+									//Verifica se posição y = 0, se sim atribui 600 na posição inicial.
+									//Para iniciar da debaixo
+									if (en.y == 0){
+										en.y = 600;
+
+									}
+
+									if(en.y <= 295){
+										//remove o inimigo i, se ele sair da tela
+										this._enemy.splice(i, 1);
+										//Diminui o tamaho do array
+										tam--;
+										i--;
+									}
+									
+									
+								}
+					}					
+
+				},
+
+				/**
+				* @author Wylianne Costa
+				* Módulo para atualizar a posição dos inimigos no jogo
+				* V. 1.00
+				*/
+				desenha: function(){
+					for(var i = 0, tam = this._enemy.length; i < tam; i++){
+						var en = this._enemy[i];
+
+						//Verifica de qual direção o inimigo vem
+						//Up
+						if(en.direcao == 1){
+							en.x = 295;
+							en.y = en.y;
+						}else 
+							//left
+							if(en.direcao == 2){
+								en.x = en.x;
+								en.y = 295;
+							}else 
+								//right
+								if(en.direcao == 3){
+									en.x = en.x;
+									en.y = 295;
+								}
+								//bottom
+								else{						
+									en.x = 295;
+									en.y = en.y;
+								}
+								
+						ctx.fillStyle = en.cor;
+						ctx.fillRect(en.x, en.y, this.largura, this.largura);
+
+					}
+					
+				}
+			};
+
+
+			/**
+			* @author Wylianne Costa
+			* Módulo para atualizar a posição dos inimigos no jogo
+			* @param e, tecla apertada
+			* V. 1.00
+			*/
+			function tecla(e){
+
+				//Salva valor da tecla, vindo do FF ou GC
+				e = e || window.event;
+
+				alert(e.keyCode);
+
+				if (estadoAtual == estados.jogando){					
+				    if (e.keyCode == '119') {
+				        //up
+				        alert("up");
+				    }
+
+				    if (e.keyCode == '97') {
+				        //left
+				        alert("left");
+				    }
+
+				    if (e.keyCode == '100') {
+				        //right
+				        alert("right");
+				    }
+
+				    if (e.keyCode == '115') {
+				        //down
+				        alert("down");
+				    }
+
+			    }else
+			    	if(e.keyCode == 32){
+				    	if(estadoAtual == estados.jogar){
+				    		estadoAtual = estados.jogando;
+
+				    	}else
+				    		if (estadoAtual == estados.perdeu){
+				    			estadoAtual = estados.jogar;
+				    		}
+				    }
+			}
+
+
+
+			/**
+			* @author Wylianne Costa
+			* Módulo para desenhar a tela do jogo
+			* V. 1.00
+			*/
+			function main(){
+
+				//Salva a altura e largura da janela
+				ALTURA = window.innerHeight;
+				LARGURA = window.innerWidth;
+
+				//Se Largura maior ou igual a 600 seta valor de largura e altura de 600, ficando 600x600
+				if (LARGURA >= 600){
+					LARGURA = 600;
+					ALTURA = 600;
+				}
+
+				//Cria um canvas
+				canvas = document.createElement("canvas");
+				//Seta a largura e altura
+				canvas.width = LARGURA;
+				canvas.height = ALTURA;
+
+
+
+				//Seta contexto 2d
+				ctx = canvas.getContext("2d");
+						
+
+
+				document.body.appendChild(canvas);
+				document.addEventListener("keypress", tecla);
+
+				estadoAtual = estados.jogar;
+				roda();
+
+
+
+			}
+
+			function roda(){
+				atualiza();
+				desenha();
+
+				window.requestAnimationFrame(roda);
+
+			}
+
+			function atualiza(){
+				frames++;
+				if (estadoAtual == estados.jogando){
+					enemy.atualiza();
+				}
+				
+				
+			}
+
+
+			function desenha(){
+				ctx.fillStyle = "#001";
+				ctx.fillRect(0, 0, LARGURA, ALTURA);
+
+				if(estadoAtual == estados.jogar){
+					ctx.fillStyle = "green";
+					ctx.fillRect(LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);
+				}else
+					if(estadoAtual == estados.perdeu){
+
+						ctx.fillStyle = "red";
+						ctx.fillRect(LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);
+					}else
+						if(estadoAtual == estados.jogando){
+							enemy.desenha();
+						}
+					
+
+				score.desenha();
+				
+
+
+		
+
+
+			}
+
+			//Inicializa
+			main();
+		</script>
+	</body>
+</html>

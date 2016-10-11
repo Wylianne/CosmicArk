@@ -15,6 +15,14 @@
 	<a href="https://github.com/Wylianne" target="_blank">Wylianne Costa</a> •
 </p>
 
+## :beginner: Requisitos 
+* Navegador
+<p>
+	<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Google Chrome</a>
+	<a href="https://www.mozilla.org/pt-BR/firefox/new/" target="_blank">Mozilla Firefox</a>
+</p>
+
+
 ## :video_game: Como Jogar
 
 Tecla | Função

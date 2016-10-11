@@ -14,3 +14,14 @@
   <a href="https://github.com/VictorCardoso22" target="_blank">Victor Cardoso</a> •
 	<a href="https://github.com/Wylianne" target="_blank">Wylianne Costa</a> •
 </p>
+
+## :video_game: Como Jogar
+
+Tecla | Função
+------------ | -------------
+W | Atira para cima
+A | Atira para esquerda
+D | Atira para direita
+S | Atira para baixo
+Backspace | Inicia jogo/Remove tela de derrota
+

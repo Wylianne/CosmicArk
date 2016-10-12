@@ -257,27 +257,33 @@
 				//Salva valor da tecla, vindo do FF ou GC
 				e = e || window.event;
 
-				alert(e.keyCode);
-
+				
 				if (estadoAtual == estados.jogando){					
-				    if (e.keyCode == '119') {
-				        //up
-				        alert("up");
+				   if (e.which == '38') {
+					//up
+					tiro.insere("cima");
+					somTiro();
 				    }
 
-				    if (e.keyCode == '97') {
-				        //left
-				        alert("left");
+				    if (e.keyCode == '37') {
+					//left
+					tiro.insere("esquerda");
+					somTiro();
+
 				    }
 
-				    if (e.keyCode == '100') {
-				        //right
-				        alert("right");
+				    if (e.keyCode == '39') {
+					//right
+					tiro.insere("direita");
+					somTiro();
+
 				    }
 
-				    if (e.keyCode == '115') {
-				        //down
-				        alert("down");
+				    if (e.which == '40') {
+					//down
+				        tiro.insere("baixo");
+					somTiro();
+
 				    }
 
 			    }else
@@ -325,7 +331,7 @@
 
 
 				document.body.appendChild(canvas);
-				document.addEventListener("keypress", tecla);
+				document.addEventListener("keydown", tecla);
 
 				estadoAtual = estados.jogar;
 				roda();

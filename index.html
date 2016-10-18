@@ -12,7 +12,54 @@
 				left: 0px;
 				right: 0px;
 				margin: auto;
+				
 			}
+
+			.centro{	
+				width: 38%;
+				height:auto;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				margin: auto;
+				z-index: 2;
+				position: relative;
+				background: url("nave.png") no-repeat;
+				background-size: 80% 100%;
+				
+			}
+			.centro .img{
+			width: 55%;
+			height: 80px;
+			background: url("nave.png") no-repeat;
+			background-size: 80% 100%;
+			margin: 290px 28%;
+			position: absolute;
+
+			animation:minhaanimacao 3s, mudaimagem 1s infinite;
+		}
+
+			@keyframes minhaanimacao
+			{
+
+				from {margin-top: 0px;}
+				to 	  {margin-top: 290px;}
+		
+			
+			}
+			@keyframes mudaimagem
+			{
+
+			1% {background: url("nave.png")no-repeat;background-size: 80% 100%;}
+			100%	  {background: url("nave2.png")no-repeat; background-size: 80% 100%;}
+				
+			}
+
+		
+
+	
+
 		</style>
 
 	</head>
@@ -60,10 +107,105 @@
 				    //seta tamanho do fundo
 				    ctx.fillRect(200, this.y, 200, this.altura);
 				    //seta cor da borda
-				    ctx.strokeStyle = "red";
+				    ctx.strokeStyle = "#222";
 				    //seta borda
 				    ctx.strokeRect(200, this.y, 200, this.altura); 
 					
+				}
+			},
+
+			tiro = {
+				_tiro: [],
+				
+				altura: 10,
+				largura: 10,
+				gravidade: 0.5,
+				velocidade:0,
+				
+				
+				insere: function(dir, x, y){
+					this._tiro.push({
+						y: y,
+						x: x,
+						largura: 10,
+						altura: 10,
+						cor: "blue",
+						direcao: dir
+					})
+				},
+
+				atualiza: function(){
+					/*this.velocidade += this.gravidade;
+					this.y = this.y + this.velocidade;
+					
+
+					if (this.y > 295 ) {
+						this.y = 295;
+						
+					}*/
+
+					for(var i = 0, tam = this._tiro.length; i < tam; i++){
+						var tiro = this._tiro[i];
+						if (tiro.direcao == "cima"){
+							tiro.y = tiro.y - velocidade;
+
+
+							if(tiro.y >= 600){
+								//remove o elemento i, e somente um elemento a partir dele
+								this._tiro.splice(i, 1);
+								tam--;
+								i--;
+							}
+						
+						}else
+							if(tiro.direcao == "baixo"){
+								tiro.y = tiro.y + velocidade;
+
+								if(tiro.y <= 0){
+									//remove o elemento i, e somente um elemento a partir dele
+									this._tiro.splice(i, 1);
+									tam--;
+									i--;
+								}
+							}else
+								if (tiro.direcao == "direita"){
+									tiro.x = tiro.x + velocidade;
+
+									if(tiro.x >= 600){
+										//remove o elemento i, e somente um elemento a partir dele
+										this._tiro.splice(i, 1);
+										tam--;
+										i--;
+									}
+								}else{
+									tiro.x = tiro.x - velocidade;
+
+									if(tiro.x <= 0){
+										//remove o elemento i, e somente um elemento a partir dele
+										this._tiro.splice(i, 1);
+										tam--;
+										i--;
+									}
+								}
+							
+					}
+				},
+
+						
+
+
+				desenha: function(){
+					for(var i = 0, tam = this._tiro.length; i < tam; i++){
+						var tiro = this._tiro[i];
+		
+								
+						ctx.fillStyle = tiro.cor;
+						ctx.fillRect(tiro.x, tiro.y, this.largura, this.largura);
+										
+						
+						
+					}
+
 				}
 			},
 
@@ -77,127 +219,157 @@
 			*/
 			enemy = {
 				_enemy: [],
-				//Direção do inimigo
 				//1 - Up; 2 - Left; 3 - Right; 4 - Down
-				direcao: [1, 2, 3, 4],
+				direcao: [1,2,3, 4],
 				
-				//Altura e largura do inimigo;
 				altura: 10,
 				largura: 10,
-				// cor e o tempo inicial que é inserido
 				cor: "#ff4e4e",
 				tempoInsere: 0,
+				score:0,
 
 
-				/**
-				* @author Wylianne Costa
-				* Módulo para inserir inimigos no jogo, todas as direções
-				* V. 1.00
-				*/
 				insere: function(){
 					this._enemy.push({
 						x: 0,
 						y: 0,
-						//Largura e altura do inimigo
 						largura: 10,
-						//Define direção que o inimigo aparecerá
 						direcao: this.direcao[Math.floor(Math.random() * 9)],
-						//Cor o inimigo
+
 						cor: "#ff4e4e"
 					})
 
-					//Intervalo de tempo que cada inimigo é chamado (0-29)
-					this.tempoInsere = Math.floor(Math.random() * 30);
+					this.tempoInsere = 30 + Math.floor(Math.random() * 21);
 				},
 
-				/**
-				* @author Wylianne Costa
-				* Módulo para calcular a posição dos inimigos no jogo
-				* V. 1.00
-				*/
 				atualiza: function(){
-					//Verifica se deve chamar um novo inimigo
 					if(this.tempoInsere == 0){
 						this.insere();
 					}else{
 						this.tempoInsere--;
 					}
 
-					//Percorre o array e atualiza a posição dos inimigos que estão na tela
+
 					for(var i = 0, tam = this._enemy.length; i < tam; i++){
 						var en = this._enemy[i];
-						
+						var j, qnt = 0;
+						var qnt = tiro._tiro.length;
 
 						if(en.direcao == 1){
-
-							//Calcula a nova posição do inimigo
 							en.y = en.y + velocidade;
 
-							if(en.y >= 295){
-								//remove o inimigo i, se ele sair da tela
-								this._enemy.splice(i, 1);
-								//Diminui o tamaho do array
-								tam--;
-								i--;
+							for (j = 0; j < qnt; j++){
+
+								if ((tiro._tiro[j].y >= en.y) && (tiro._tiro[j].y - en.y < 10)){
+									tiro._tiro.splice(j, 1);
+									this._enemy.splice(i, 1);
+									j--;
+									qnt--;
+									tam--;
+									i--;
+									//recebe ponto
+									this.score++;
+								}
 							}
 
 
+							if (en.y >= 240){
+								//perde ponto
+								this._enemy.splice(i, 1);
+								tam--;
+								i--;
+								estadoAtual = estados.perdeu;
+							}
+
 						}else 
 							if(en.direcao == 2){
-
-								//Calcula a nova posição do inimigo
 								en.x = en.x + velocidade;
 
+								for (j = 0; j < qnt; j++){
 
-									if(en.x >= 295){
-										//remove o inimigo i, se ele sair da tela
+									if ((tiro._tiro[j].x >= en.x) && (tiro._tiro[j].x - en.x < 10)){
+										tiro._tiro.splice(j, 1);
 										this._enemy.splice(i, 1);
-										//Diminui o tamaho do array
+										j--;
+										qnt--;
 										tam--;
 										i--;
+										//recebe ponto
+										this.score++;
 									}
+								}
+
+
+								if(en.x >= 220){
+									//remove o elemento i, e somente um elemento a partir dele
+									this._enemy.splice(i, 1);
+									tam--;
+									i--;
+									estadoAtual = estados.perdeu;
+								}
 							}else 
 								if(en.direcao == 3){
-
-
-									//Calcula a nova posição do inimigo
-									en.x = en.x - velocidade;
-
-									//Verifica se posição x = 0, se sim atribui 600 na posição inicial.
-									//Para iniciar da direita
 									if (en.x == 0){
 										en.x = 600;
 
 									}
 
+									en.x = en.x - velocidade;
+									
+									for (j = 0; j < qnt; j++){
+										if ((tiro._tiro[j].x >= en.x) && (en.x - tiro._tiro[j].x < 10)){
+											tiro._tiro.splice(j, 1);
+											this._enemy.splice(i, 1);
+											j--;
+											qnt--;
+											tam--;
+											i--;
+											//recebe ponto
+											this.score++;
+										}
+									}
 
-									if(en.x <= 295){
-										//remove o inimigo i, se ele sair da tela
+									
+
+									if(en.x <= 340){
+										//remove o elemento i, e somente um elemento a partir dele
 										this._enemy.splice(i, 1);	
-										//Diminui o tamaho do array
 										tam--;
 										i--;
+										estadoAtual = estados.perdeu;
 									}
+
+									
 									
 								}
 								else{
-
-									//Calcula a nova posição do inimigo
-									en.y = en.y - velocidade;
-
-									//Verifica se posição y = 0, se sim atribui 600 na posição inicial.
-									//Para iniciar da debaixo
 									if (en.y == 0){
 										en.y = 600;
 
 									}
 
-									if(en.y <= 295){
-										//remove o inimigo i, se ele sair da tela
+									en.y = en.y - velocidade;
+
+									for (j = 0; j < qnt; j++){
+
+										if ((tiro._tiro[j].y >= en.y) && (en.y - tiro._tiro[j].y  < 10)){
+											tiro._tiro.splice(j, 1);
+											this._enemy.splice(i, 1);
+											j--;
+											qnt--;
+											tam--;
+											i--;
+											//recebe ponto
+											this.score++;
+										}
+									}
+
+									if(en.y <= 320){
+										//remove o elemento i, e somente um elemento a partir dele
 										this._enemy.splice(i, 1);
-										//Diminui o tamaho do array
 										tam--;
 										i--;
+										estadoAtual = estados.perdeu;
 									}
 									
 									
@@ -205,29 +377,28 @@
 					}					
 
 				},
+				reset: function(){
+						this.velocidade = 0;
+						this.y = 0;
+						this.score = 0;
+					},
 
-				/**
-				* @author Wylianne Costa
-				* Módulo para atualizar a posição dos inimigos no jogo
-				* V. 1.00
-				*/
 				desenha: function(){
 					for(var i = 0, tam = this._enemy.length; i < tam; i++){
 						var en = this._enemy[i];
 
-						//Verifica de qual direção o inimigo vem
 						//Up
-						if(en.direcao == 1){
+						if((en.direcao == 1) || (en.direcao == 5)){
 							en.x = 295;
 							en.y = en.y;
 						}else 
 							//left
-							if(en.direcao == 2){
+							if((en.direcao == 2) || (en.direcao == 6)){
 								en.x = en.x;
 								en.y = 295;
 							}else 
 								//right
-								if(en.direcao == 3){
+								if((en.direcao == 3) || (en.direcao == 7)){
 									en.x = en.x;
 									en.y = 295;
 								}
@@ -246,6 +417,15 @@
 			};
 
 
+
+			function somTiro(){
+				event.preventDefault();
+                audio = document.createElement('audio');
+                audio.src = 'tiro.ogg';
+                audio.autoplay = true;
+                document.body.appendChild(audio);
+			}
+
 			/**
 			* @author Wylianne Costa
 			* Módulo para atualizar a posição dos inimigos no jogo
@@ -254,48 +434,49 @@
 			*/
 			function tecla(e){
 
-				//Salva valor da tecla, vindo do FF ou GC
+
 				e = e || window.event;
+			if (estadoAtual == estados.jogando) {
+			    if (e.which == '38') {
+			        //up
+			        tiro.insere("cima", 295 , 240 );
+			        somTiro();
+			    }
 
-				
-				if (estadoAtual == estados.jogando){					
-				   if (e.which == '38') {
-					//up
-					tiro.insere("cima");
-					somTiro();
-				    }
+			    if (e.keyCode == '37') {
+			        //left
+			        tiro.insere("esquerda", 220 , 295);
+			        somTiro();
 
-				    if (e.keyCode == '37') {
-					//left
-					tiro.insere("esquerda");
-					somTiro();
+			    }
 
-				    }
+			    if (e.keyCode == '39') {
+			        //right
+			        tiro.insere("direita", 330 , 295);
+			        somTiro();
 
-				    if (e.keyCode == '39') {
-					//right
-					tiro.insere("direita");
-					somTiro();
+			    }
 
-				    }
+			    if (e.which == '40') {
+			        //down
+			       tiro.insere("baixo", 295 , 320);
+			        somTiro();
 
-				    if (e.which == '40') {
-					//down
-				        tiro.insere("baixo");
-					somTiro();
-
-				    }
-
-			    }else
-			    	if(e.keyCode == 32){
+			    }
+			}else 
+				if(e.which == 32){
 				    	if(estadoAtual == estados.jogar){
 				    		estadoAtual = estados.jogando;
 
 				    	}else
 				    		if (estadoAtual == estados.perdeu){
+				    			enemy.score = 0;
 				    			estadoAtual = estados.jogar;
 				    		}
 				    }
+
+
+
 			}
 
 
@@ -352,6 +533,7 @@
 				frames++;
 				if (estadoAtual == estados.jogando){
 					enemy.atualiza();
+					tiro.atualiza();	
 				}
 				
 				
@@ -359,34 +541,57 @@
 
 
 			function desenha(){
-				ctx.fillStyle = "#001";
+				var my_gradient = ctx.createLinearGradient(1,380,1,600);
+				my_gradient.addColorStop(0,"black");
+				my_gradient.addColorStop(1,"gray");
+				ctx.fillStyle = my_gradient;
 				ctx.fillRect(0, 0, LARGURA, ALTURA);
 
 				if(estadoAtual == estados.jogar){
-					ctx.fillStyle = "green";
-					ctx.fillRect(LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);
+				
+					var inicio = "Aperte Spacebar para iniciar!";
+
+					ctx.fillStyle = "blue";
+					ctx.font = "30px Arial";
+					ctx.fillText(inicio, 100, 68)
 				}else
 					if(estadoAtual == estados.perdeu){
 
-						ctx.fillStyle = "red";
-						ctx.fillRect(LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);
+						/*ctx.fillStyle = "red";
+						ctx.fillRect(LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);*/
+							var perdeu = "você perdeu, aperte Spacebar para continuar!";
+							ctx.fillStyle = "red";
+							ctx.font = "27px Arial";
+							ctx.fillText(perdeu, 30, 68);
+							score.desenha();
+							ctx.fillStyle = "#fff";
+							ctx.font = "35px Arial";
+							ctx.fillText(enemy.score, 220, 560);
+							enemy.desenha();
 					}else
 						if(estadoAtual == estados.jogando){
+						
+
+							score.desenha();
+							ctx.fillStyle = "#fff";
+							ctx.font = "35px Arial";
+							ctx.fillText(enemy.score, 220, 560);
 							enemy.desenha();
+
 						}
 					
 
-				score.desenha();
 				
-
-
-		
-
+				tiro.desenha();
 
 			}
 
 			//Inicializa
 			main();
 		</script>
+		<div class="centro">
+			<div class="img"></div>
+		</div>
+		
 	</body>
 </html>
